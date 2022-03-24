@@ -3,6 +3,12 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 
+  :root {
+      --color-neutral: #ffffff;
+      --color-wrong: #ff0000;
+      --color-right: #00cc00;
+  }
+
 header {
     background: #006600;
     padding: 30px 25px;
@@ -28,6 +34,14 @@ main {
     align-items: center;
     width: 100vw;
     height: 50vh;
+  }
+
+  .btn.correct {
+      --color: var(--color-right);
+  }
+
+  .btn.wrong {
+      --color: var(--color-wrong);
   }
   
 .container {
@@ -56,4 +70,17 @@ main {
 
 .hide {
       display: none;
+  }
+
+  .next-btn {
+      font-size: 1.5rem;
+      font-weight:bold;
+      padding: 10px 10px;
+      margin: 10px 10px;
+  }
+
+  .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
   }
