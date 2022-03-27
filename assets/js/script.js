@@ -66,6 +66,7 @@ let counter = 200;
 const answerInput = document.getElementById("answer-input");
 const totalQuestions = questions.length 
 let questionsAnswered = 0
+const highscoreForm = document.getElementById('score')
 
 
 // have questions appear in a random order each time
@@ -94,7 +95,7 @@ function nextQuestion() {
         showQuestion(shuffledQuestions[currentQuestionIndex])
     } else {
         questionContainerElement.classList.add('hide')
-        saveScore();
+        submitScore();
     }
 }
 
@@ -190,3 +191,16 @@ function startTimer(){
       startTimer();
   };
 
+function submitScore() {
+    highscoreForm.classList.remove('hide');
+}
+
+var submitHs = document.getElementById('score-info');
+    submitHs.addEventListener('click', saveScore)
+
+function saveScore() {
+    console.log('hello');
+  const highScore =  document.createElement('div');
+  const highscoreInfo = document.createTextNode('Hi there');
+  highScore.appendChild(highscoreInfo);
+}
