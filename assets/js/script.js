@@ -1,84 +1,3 @@
-const startButton = document.getElementById('start-btn')
-const nextButton = document.getElementById('next-btn') 
-const questionContainerElement = document.getElementById('question-container')
-const questionElement = document.getElementById('question')
-const answerButtonsElement = document.getElementById('answer-btns')
-
-// have questions appear in a random order each time
-let shuffledQuestions, currentQuestionIndex
-
-startButton.addEventListener('click', startQuiz)
-nextButton.addEventListener('click', () => {
-    currentQuestionIndex++
-    nextQuestion()
-})
-
-function startQuiz() {
-    startTimer();
-    startButton.classList.add('hide');
-    shuffledQuestions = questions.sort(() => Math.random() - .5)
-    currentQuestionIndex = 0
-    questionContainerElement.classList.remove('hide');
-    nextQuestion()
-}
-
-function nextQuestion() {
-    resetState()
-    showQuestion(shuffledQuestions[currentQuestionIndex])
-}
-
-function showQuestion(question) {
-    questionElement.innerText = question.question
-    question.answers.forEach(answer => {
-        const button = document.createElement('button')
-        button.innerText = answer.text
-        button.classList.add('btn')
-        if (answer.correct) {
-            button.dataset.correct = answer.correct
-        }
-        button.addEventListener('click', chooseAnswer)
-        answerButtonsElement.appendChild(button)
-    })
-}
-
-function resetState() {
-    nextButton.classList.add('hide')
-    while (answerButtonsElement.firstChild) {
-        answerButtonsElement.removeChild
-        (answerButtonsElement.firstChild)
-    }
-} 
-
-function chooseAnswer(e) {
-    const selectedButton = e.target
-    const correct = selectedButton.dataset.correct
-    setStatusClass(document.body, correct)
-    Array.from(answerButtonsElement.children).forEach(button => {
-        setStatusClass(button, button.dataset.correct)
-    })
-    if (shuffledQuestions.length > currentQuestionIndex + 1) {
-        nextButton.classList.remove('hide')
-    } else {
-        startButton.innerText = 'Restart'
-        startButton.classList.remove('hide')
-    }
-    nextButton.classList.remove('hide')
-}
-
-function setStatusClass ( element, correct) {
-    clearStatusClass(element)
-    if (correct) {
-        element.classList.add('correct')       
-    } else {
-      element.classList.add('wrong')  
-    }
-}
-
-function clearStatusClass(element){
-    element.classList.remove('correct')
-    element.classList.remove('wrong')
-}
-
 // array for questions
 const questions = [
     { 
@@ -137,9 +56,121 @@ const questions = [
             },
 ]
 
+
+const startButton = document.getElementById('start-btn')
+const nextButton = document.getElementById('next-btn') 
+const questionContainerElement = document.getElementById('question-container')
+const questionElement = document.getElementById('question')
+const answerButtonsElement = document.getElementById('answer-btns')
+let counter = 200;
+const answerInput = document.getElementById("answer-input");
+const totalQuestions = questions.length 
+let questionsAnswered = 0
+
+
+// have questions appear in a random order each time
+let shuffledQuestions, currentQuestionIndex
+
+startButton.addEventListener('click', startQuiz)
+nextButton.addEventListener('click', () => {
+    currentQuestionIndex++
+    nextQuestion()
+})
+
+function startQuiz() {
+    startTimer();
+    startButton.classList.add('hide');
+    shuffledQuestions = questions.sort(() => Math.random() - .5)
+    currentQuestionIndex = 0
+    questionContainerElement.classList.remove('hide');
+    nextQuestion()
+}
+
+function nextQuestion() {
+    questionsAnswered++
+    console.log((questionsAnswered < totalQuestions))
+    resetState()
+    if (questionsAnswered < totalQuestions) {
+        showQuestion(shuffledQuestions[currentQuestionIndex])
+    } else {
+        questionContainerElement.classList.add('hide')
+        saveScore();
+    }
+}
+
+function showQuestion(question) {
+    questionElement.innerText = question.question
+    question.answers.forEach(answer => {
+        const button = document.createElement('button')
+        button.innerText = answer.text
+        button.classList.add('btn')
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+        }
+        button.addEventListener('click', (e) => chooseAnswer(e, answer.correct)  )
+        answerButtonsElement.appendChild(button)
+    })
+}
+
+function resetState() {
+    nextButton.classList.add('hide')
+    while (answerButtonsElement.firstChild) {
+        answerButtonsElement.removeChild
+        (answerButtonsElement.firstChild)
+    }
+    while (answerInput.firstChild) {
+        answerInput.removeChild
+        (answerInput.firstChild)
+    }
+} 
+
+function chooseAnswer(e, isCorrect) {
+    console.log(isCorrect);
+    if (!isCorrect) {
+        counter = counter - 20;
+    }
+    const selectedButton = e.target
+    const correct = selectedButton.dataset.correct
+    setStatusClass(document.body, correct)
+    Array.from(answerButtonsElement.children).forEach(button => {
+        setStatusClass(button, button.dataset.correct)
+    })
+    if (shuffledQuestions.length > currentQuestionIndex + 1) {
+        nextButton.classList.remove('hide')
+    } else {
+        startButton.innerText = 'Restart'
+        startButton.classList.remove('hide')
+    }
+    if (isCorrect){
+        var correctText = document.createElement('h3');
+        correctText.textContent = "Correct!!!";
+        answerInput.appendChild(correctText);
+    } else {
+        var wrongText = document.createElement('h3');
+        wrongText.textContent = "Wrong!!!";
+        answerInput.appendChild(wrongText);
+    }
+    nextButton.classList.remove('hide');
+    
+}
+
+function setStatusClass ( element, correct) {
+    clearStatusClass(element)
+    if (correct) {
+        element.classList.add("correct")       
+    } else {
+      element.classList.add('wrong')  
+    }
+}
+
+function clearStatusClass(element){
+    element.classList.remove('correct')
+    element.classList.remove('wrong')
+}
+
+
 function startTimer(){
-    var counter = 200;
-    setInterval(function() {
+ setInterval(function() {
       counter--;
       if (counter >= 0) {
         span = document.getElementById("countdown");
@@ -148,6 +179,7 @@ function startTimer(){
       if (counter === 0) {
           alert('sorry, out of time');
           clearInterval(counter);
+          saveScore();
       }
     }, 1000);
   }
@@ -158,6 +190,3 @@ function startTimer(){
       startTimer();
   };
 
-function saveScore() {
-
-}

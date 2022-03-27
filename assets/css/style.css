@@ -9,6 +9,7 @@
       --color-right: #00cc00;
   }
 
+
 header {
     background: #006600;
     padding: 30px 25px;
@@ -36,14 +37,7 @@ main {
     height: 50vh;
   }
 
-  .btn.correct {
-      --color: var(--color-right);
-  }
 
-  .btn.wrong {
-      --color: var(--color-wrong);
-  }
-  
 .container {
     padding: 10px;
     width: 800px;
@@ -94,3 +88,9 @@ p {
     height: 20%;
     width: 30%;
   }
+
+  .highscore {
+    text-align: center;
+    vertical-align: text-top;
+  }
+ 
