@@ -67,6 +67,9 @@ const answerInput = document.getElementById("answer-input");
 const totalQuestions = questions.length 
 let questionsAnswered = 0
 const highscoreForm = document.getElementById('score')
+var submitHs = document.getElementById('score');
+submitHs.addEventListener('submit', saveScore);
+var timer;
 
 
 // have questions appear in a random order each time
@@ -94,9 +97,11 @@ function nextQuestion() {
     if (questionsAnswered < totalQuestions) {
         showQuestion(shuffledQuestions[currentQuestionIndex])
     } else {
+        clearInterval(timer);
+        console.log(timer);
         questionContainerElement.classList.add('hide')
         submitScore();
-    }
+    } 
 }
 
 function showQuestion(question) {
@@ -171,7 +176,7 @@ function clearStatusClass(element){
 
 
 function startTimer(){
- setInterval(function() {
+ timer = setInterval(function() {
       counter--;
       if (counter >= 0) {
         span = document.getElementById("countdown");
@@ -179,14 +184,13 @@ function startTimer(){
       }
       if (counter === 0) {
           alert('sorry, out of time');
-          clearInterval(counter);
+          clearInterval(timer);
           saveScore();
       }
     }, 1000);
   }
 
-  function start()
-  {
+  function start() {
       document.getElementById("count").style="color:green;";
       startTimer();
   };
@@ -195,12 +199,20 @@ function submitScore() {
     highscoreForm.classList.remove('hide');
 }
 
-var submitHs = document.getElementById('score-info');
-    submitHs.addEventListener('click', saveScore)
 
-function saveScore() {
+function saveScore(event) {
+    event.preventDefault();
     console.log('hello');
+    var initialsEl = document.getElementById('initials');
+    var initials = initialsEl.value
+    var scoreEl = document.getElementById("countdown");
+    var score = scoreEl.textContent
+    console.log(score, initials);
+    localStorage.setItem('highScore', initials + ': ' +  score );
   const highScore =  document.createElement('div');
-  const highscoreInfo = document.createTextNode('Hi there');
+  const highscoreInfo = document.createTextNode(initials + ': ' +  score);
   highScore.appendChild(highscoreInfo);
+  document.querySelector("main").appendChild(highScore);
 }
+
+
