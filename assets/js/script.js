@@ -202,7 +202,6 @@ function submitScore() {
 
 function saveScore(event) {
     event.preventDefault();
-    console.log('hello');
     var initialsEl = document.getElementById('initials');
     var initials = initialsEl.value
     var scoreEl = document.getElementById("countdown");
@@ -210,7 +209,7 @@ function saveScore(event) {
     console.log(score, initials);
     localStorage.setItem('highScore', initials + ': ' +  score );
   const highScore =  document.createElement('div');
-  const highscoreInfo = document.createTextNode(initials + ': ' +  score);
+  const highscoreInfo = document.createTextNode('Score:' + ' ' + initials + ' ' +  score);
   highScore.appendChild(highscoreInfo);
   document.querySelector("main").appendChild(highScore);
 }
